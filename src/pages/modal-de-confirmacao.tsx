@@ -9,23 +9,42 @@
  */
 
 import { useState } from 'react';
-import Head from 'next/head';
 
-import styles from '@/styles/modal.module.css';
-import { Modal } from '@/components/Modal';
+import stylesModal from '@/styles/modal.module.css';
+import stylesModalConfirmation from '@/styles/modal-de-confirmacao.module.css';
+
+import { handleModalClose } from '@/utils/modal';
+import { ConfirmationModal } from '@/components/ConfirmationModal';
 
 export default function Home() {
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 
+	function handleModalConfirm() {
+		setModalIsOpen(false);
+		alert('Projeto deletado');
+	}
+
 	return (
 		<>
-			<main className={styles.container}>
+			<main className={stylesModal.container}>
 				<button type="button" onClick={() => setModalIsOpen(true)}>
 					Abrir modal de confirmação
 				</button>
 			</main>
 
-			{/* Renderizar modal de confirmação */}
+			<ConfirmationModal
+				isOpen={modalIsOpen}
+				onClose={handleModalClose}
+				namedAttrClose={['data-modal-close', 'data-modal-cancel']}
+				setState={setModalIsOpen}
+				onConfirm={handleModalConfirm}
+			>
+				<>
+					<p className={stylesModalConfirmation.deleteProjectText}>
+						Deseja excluir o projeto?
+					</p>
+				</>
+			</ConfirmationModal>
 		</>
 	);
 }

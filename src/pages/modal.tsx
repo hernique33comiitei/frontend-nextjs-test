@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import styles from '@/styles/modal.module.css';
 import { Modal } from '@/components/Modal';
+import { handleModalClose } from '@/utils/modal';
 
 export default function Home() {
 	const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -9,22 +10,6 @@ export default function Home() {
 	function handleModalConfirm() {
 		setModalIsOpen(false);
 		alert('confirmado');
-	}
-
-	function handleModalClose(
-		type: 'click' | 'esc',
-		target: TargetWithAttributes,
-		namedsAttrClose?: string[]
-	) {
-		if (type === 'esc') {
-			return setModalIsOpen(false);
-		}
-
-		for (let namedAttrClose of namedsAttrClose!) {
-			if (target.attributes?.getNamedItem(namedAttrClose)) {
-				return setModalIsOpen(false);
-			}
-		}
 	}
 
 	function renderModalContent() {
@@ -58,7 +43,9 @@ export default function Home() {
 				isOpen={modalIsOpen}
 				title="Criar novo usuário"
 				onClose={handleModalClose}
+				namedAttrClose={['data-modal-close', 'data-modal-cancel']}
 				onConfirm={handleModalConfirm}
+				setState={setModalIsOpen}
 				footer={{ confirmText: 'Criar usuário' }}
 			>
 				{renderModalContent()}

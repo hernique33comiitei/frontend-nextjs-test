@@ -4,11 +4,14 @@ type ModalProps = {
 	children: React.ReactNode;
 	title: string;
 	isOpen: boolean;
+	setState: React.Dispatch<React.SetStateAction<boolean>>;
 	onClose?: (
 		type: 'click' | 'esc',
 		target: TargetWithAttributes,
-		namedAttrClose?: string[]
+		setState: React.Dispatch<React.SetStateAction<boolean>>,
+		namedsAttrClose?: string[]
 	) => void;
+	namedAttrClose?: string[];
 	onConfirm?: () => void;
 	footer?: {
 		hidden?: boolean;
@@ -32,7 +35,7 @@ type ModalProps = {
 
 export const Modal: React.FC<ModalProps> = ({ children, title, isOpen, ...props }) => {
 	function handleCloseClick(e: React.MouseEvent) {
-		props.onClose?.('click', e.target, ['data-modal-close', 'data-modal-cancel']);
+		props.onClose?.('click', e.target, props.setState, props.namedAttrClose);
 	}
 
 	function handleConfirmClick(e: React.MouseEvent) {
@@ -40,7 +43,8 @@ export const Modal: React.FC<ModalProps> = ({ children, title, isOpen, ...props 
 	}
 
 	function handleKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
-		if (e.key === 'Escape') props.onClose?.('esc', e.target);
+		if (e.key === 'Escape')
+			props.onClose?.('esc', e.target, props.setState, props.namedAttrClose);
 	}
 
 	if (!isOpen) return null;

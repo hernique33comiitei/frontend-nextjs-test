@@ -1,0 +1,13 @@
+.deleteProjectText {
+	font-size: 1em;
+	color: #000000;
+	background-color: #d9353b33;
+	border: 1px solid #d9353b66;
+	border-radius: 8px;
+	padding: 0.5rem 1.5rem;
+	margin-bottom: 1rem;
+	text-align: center;
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
+}
