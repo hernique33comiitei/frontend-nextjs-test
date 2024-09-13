@@ -1,0 +1,28 @@
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0 auto;
+	height: 100%;
+}
+
+.container ul {
+	list-style: decimal;
+}
+
+.container ul li {
+	margin-top: 1rem;
+	font-size: 1.25rem;
+	transition: transform 100ms ease-in-out;
+	width: fit-content;
+}
+
+.container ul li:hover {
+	transform: scale(1.05);
+}
+
+.container ul li a {
+	color: #0059ff;
+	margin-left: 0.5rem;
+	text-decoration: none;
+}

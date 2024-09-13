@@ -1,0 +1,29 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: 'Roboto', sans-serif;
+	font-size: 16px;
+	margin: 0;
+}
+
+#__next {
+	width: 100vw;
+	min-height: 100vh;
+	height: 100vh;
+	padding: 1.5rem;
+}
+
+button {
+	cursor: pointer;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	padding: 0.75rem 1.5rem;
+}
+
+button[data-type='confirm'] {
+	background-color: #4caf50;
+	color: #ffffff;
+	border: none;
+}
