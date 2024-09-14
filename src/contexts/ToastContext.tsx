@@ -1,4 +1,3 @@
-// ToastContext.tsx
 import React, { createContext, useContext, useState } from 'react';
 import { IToastMessage } from '@/types/toast-message';
 

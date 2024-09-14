@@ -1,35 +1,42 @@
-/**
- * Lista
- *
- * - Primeiramente vá até /src/pages/api/users/index.ts e implemente a API
- * - Obter a lista de usuários da API
- * - Renderizar a lista de usuários
- */
-
 import { useEffect, useState } from 'react';
 
 import styles from '@/styles/lista.module.css';
-import { IUser } from '@/types/user';
+import { IUser, IUsersReturnList } from '@/types/user';
 
 export default function Lista() {
 	const [users, setUsers] = useState<Array<IUser>>([]);
+	const [page, setPage] = useState<number>(1);
+	const [totalPages, setTotalPages] = useState<number>(1);
 
-	async function getUsersList() {
+	async function getUsersList(page: number) {
 		try {
-			const response = await fetch('/api/users');
-			const data = await response.json();
+			const response = await fetch(`/api/users?page=${page}`);
+			const data: IUsersReturnList = await response.json();
 
 			if (!response.ok) throw new Error('Erro ao obter os dados');
 
-			setUsers(data);
+			setUsers(data.users);
+			setTotalPages(data.details.totalPages);
 		} catch (error) {
 			console.error(error);
 		}
 	}
 
 	useEffect(() => {
-		getUsersList();
-	}, []);
+		getUsersList(page);
+	}, [page]);
+
+	const nextPage = () => {
+		if (page < totalPages) {
+			setPage(page + 1);
+		}
+	};
+
+	const prevPage = () => {
+		if (page > 1) {
+			setPage(page - 1);
+		}
+	};
 
 	return (
 		<div className={styles.container}>
@@ -37,8 +44,24 @@ export default function Lista() {
 				<h2>Lista de usuários</h2>
 
 				<div data-list-container>
-					{/* Exemplo */}
-					<div data-list-item>ID 323 - Usuário 323 (user-323@mail.com)</div>
+					{users &&
+						users.map((userData) => (
+							<div key={userData.id} data-list-item>
+								{userData.id} - {userData.name} ({userData.email})
+							</div>
+						))}
+				</div>
+
+				<div className={styles.pagination}>
+					<button onClick={prevPage} disabled={page === 1}>
+						Anterior
+					</button>
+					<span>
+						Página {page} de {totalPages}
+					</span>
+					<button onClick={nextPage} disabled={page === totalPages}>
+						Próxima
+					</button>
 				</div>
 			</div>
 		</div>
