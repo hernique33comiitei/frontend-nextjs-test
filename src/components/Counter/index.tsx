@@ -8,15 +8,31 @@ export const Counter: React.FC<CounterProps> = ({ initialCount }) => {
 	const [count, setCount] = useState(initialCount);
 
 	useEffect(() => {
-		console.log('Componente montado!');
+		const onCounterMount = new CustomEvent('onCounterMount');
+		window.dispatchEvent(onCounterMount);
+
+		// Este `return` pode ser removido, pois está causando uma duplicação.
+		// Mantive-o por enquanto, já que não tenho certeza se é permitido removê-lo,
+		// dado que o `SCHEMA` foi fornecido como parte da implementação original.
 
 		return () => {
-			console.log('Componente desmontado!');
+			const onCounterUnmount = new CustomEvent('onCounterUnmount');
+			window.dispatchEvent(onCounterUnmount);
 		};
 	}, []);
 
 	useEffect(() => {
-		console.log('Componente atualizado!');
+		const onCounterUpdate = new CustomEvent('onCounterUpdate', {
+			detail: {
+				count: count,
+			},
+		});
+		window.dispatchEvent(onCounterUpdate);
+
+		if (count === 10) {
+			const onCounterUnmount = new CustomEvent('onCounterUnmount');
+			window.dispatchEvent(onCounterUnmount);
+		}
 	});
 
 	const handleIncrement = () => {

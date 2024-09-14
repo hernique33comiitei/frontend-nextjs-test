@@ -39,10 +39,16 @@ export default function CicloDeVida({ initialCount }: CicloDeVidaProps) {
 		});
 
 		window.addEventListener('onCounterUnmount', (event: CustomEventInit) => {
+			setShowCounter((prevCount) => {
+				return false;
+			});
 			console.log('onCounterUnmount');
 		});
 
 		window.addEventListener('onCounterUpdate', (event: CustomEventInit) => {
+			setCount((prevCount) => {
+				return event.detail.count;
+			});
 			console.log('onCounterUpdate');
 		});
 	}, []);
