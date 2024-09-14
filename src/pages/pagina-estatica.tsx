@@ -34,7 +34,7 @@ export default function Lista({ data }: any) {
 
 export async function getStaticProps() {
 	try {
-		const response = await fetch(`${process.env['BASE_URL']}/api/cities/10`);
+		const response = await fetch(`${process.env['NEXT_PUBLIC_BASE_URL']}/api/cities/10`);
 		const data = await response.json();
 
 		if (!response.ok) throw new Error('Erro ao obter os dados');

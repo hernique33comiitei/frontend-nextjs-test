@@ -1,29 +1,55 @@
-/**
- * Formulário
- *
- * - Primeiramente vá até /src/pages/api/users/create.ts e implemente a API
- * - Deve ser implementado utilizando a lib react-hook-form
- * - O formulário deve ter os seguintes campos: nome, e-mail
- * - Os dois campos são obrigatórios e precisam de validação
- * - Ao dar 'submit', deve ser feito uma request para /api/users/create
- * - Lide com os possíveis erros
- */
+import { useForm, SubmitHandler } from 'react-hook-form';
 
 import styles from '@/styles/formulario.module.css';
+import { emailObjConfig, nameObjConfig } from '@/utils/form';
 
 export default function Form() {
-	function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-		event.preventDefault();
+	const {
+		register,
+		handleSubmit,
+		watch,
+		formState: { errors },
+	} = useForm<Inputs>();
 
-		console.log('submit');
-	}
+	const onSubmit: SubmitHandler<Inputs> = async (data) => {
+		const url = `${process.env['NEXT_PUBLIC_BASE_URL']}/api/users/create`;
+
+		const postCreateUser = await fetch(url, {
+			method: 'post',
+			headers: {
+				'Content-type': 'application/json',
+			},
+			body: JSON.stringify(data),
+		});
+
+		const responseCreatedUser = await postCreateUser.json();
+
+		console.log(responseCreatedUser);
+
+		// Aqui poderiamos, chamar o toastMsg, limpar os inputs, fazer redirects
+		// Tudo depende da regra de negócio
+	};
 
 	return (
 		<div className={styles.container}>
 			<div className={styles.content}>
-				<form onSubmit={handleSubmit}>
-					<input type="text" placeholder="Name" />
-					<input type="email" placeholder="E-mail" />
+				<form onSubmit={handleSubmit(onSubmit)}>
+					{/* Esses input poderiam ser refatorados para um componente separado. 
+    				Dessa forma, poderíamos passar todas as propriedades necessárias 
+    				por meio de props, tornando o código mais modular e reutilizável. */}
+					<input type="text" placeholder="Name" {...register('name', nameObjConfig)} />
+					{errors.name && (
+						<span className={styles.textFieldRequired}>{errors.name.message}</span>
+					)}
+
+					<input
+						type="text"
+						placeholder="E-mail"
+						{...register('email', emailObjConfig)}
+					/>
+					{errors.email && (
+						<span className={styles.textFieldRequired}>{errors.email.message}</span>
+					)}
 
 					<button type="submit" data-type="confirm">
 						Enviar

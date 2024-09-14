@@ -30,3 +30,10 @@
 	width: 50%;
 	margin-left: auto;
 }
+
+.textFieldRequired {
+	font-size: 0.9em;
+	color: #ff0000;
+	font-weight: 400;
+	display: inline-block;
+}
