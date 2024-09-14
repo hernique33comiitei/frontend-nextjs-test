@@ -12,7 +12,7 @@ export default function Form() {
 	} = useForm<Inputs>();
 
 	const onSubmit: SubmitHandler<Inputs> = async (data) => {
-		const url = `${process.env['NEXT_PUBLIC_BASE_URL']}/api/users/create`;
+		const url = `/api/users/create`;
 
 		const postCreateUser = await fetch(url, {
 			method: 'post',
